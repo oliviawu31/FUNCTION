@@ -105,7 +105,7 @@
     </form>
 
     <?php
-        include "../function_02.php";
+        include "./function.php";
         starts('菱形',18);
     ?>
 </body>
