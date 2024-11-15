@@ -148,7 +148,8 @@ function all($table){
 //  * /
 
 function find($table,$id){
-    
+
+    $sql="select * from $table where ";
     $pdo=$pdo=pdo('crud');
 
     if(is_array($id)){
@@ -157,56 +158,98 @@ function find($table,$id){
             //sprintf("`%s`='%s'",$key,$value);
             $tmp[]="`$key`='$value'";
         }
-        $sql="select * from $table where ".join(" && ",$tmp);
+
+        // 簡化 //
+  
+    //     $sql="select * from $table where ".join(" && ",$tmp);
         
-    }else{
-        $sql="select * from $table where id='$id'";
-    }
-    $row=$pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
-    
-    return $row;
+    // }else{
+    //     $sql="select * from $table where id='$id'";
+    // }
+
+
+    $sql=$sql.join(" && ",$tmp);
+        
+}else{
+    $sql=$sql . " `id`='$id'";
 }
+$row=$pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
 
-/**
- * 刪除指定條件的資料
- * @param string $table 資料表名稱
- * @param array $id 條件(數字或陣列)
- * @return boolean
- */
-
- function del($table ,$id){
-    $pdo=$pdo=pdo('crud');
-
-    if(is_array($id)){
-        $tmp=[];
-        foreach($id as $key => $value){
-            //sprintf("`%s`='%s'",$key,$value);
-            $tmp[]="`$key`='$value'";
-        }
-        $sql="delete from $table where ".join(" && ",$tmp);
-        
-    }else{
-        $sql="delete from $table where id='$id'";
-    }
-
-     return  $pdo->exec($sql);
-    
-
-
+return $row;
 }
 
 
 /**
- * 列出陣列內容
- */
+* 刪除指定條件的資料
+* @param string $table 資料表名稱
+* @param array $id 條件(數字或陣列)
+* @return boolean
+*/
+
+function del($table ,$id){
+$sql="delete from $table where ";
+$pdo=$pdo=pdo('crud');
+
+if(is_array($id)){
+    $tmp=[];
+    foreach($id as $key => $value){
+        //sprintf("`%s`='%s'",$key,$value);
+        $tmp[]="`$key`='$value'";
+    }
+    $sql=$sql.join(" && ",$tmp);
+    
+}else{
+    $sql=$sql . " id='$id'";
+}
+
+ return  $pdo->exec($sql);
+
+}
+
+/**
+* 更新指定條件的資料
+* @param string $table 資料表名稱
+* @param array $array 更新的欄位及內容
+* @param array || number $id 條件(數字或陣列)
+* @return boolean
+*/
+
+function update($table,$array,$id){
+$sql="update $table set ";
+$pdo=$pdo=pdo('crud');
+$tmp=[];
+foreach($array as $key => $value){
+    $tmp[]="`$key`='$value'";
+}
+$sql=$sql . join(",",$tmp);
+
+if(is_array($id)){
+    $tmp=[];
+    foreach($id as $key => $value){
+        $tmp[]="`$key`='$value'";
+    }
+    $sql=$sql . " where ".join(" && ",$tmp);
+
+}else{
+    $sql=$sql . " where `id`='$id'";
+}
+
+return $pdo->exec($sql);
+
+
+}
+
+/**
+* 列出陣列內容
+*/
 function dd($array){
-    echo "<pre>";
-    print_r($array);
-    echo "</pre>";
+echo "<pre>";
+print_r($array);
+echo "</pre>";
 }
 
 
-
+update('member',['email'=>'12@gmail.com'],['acc'=>'12','pw'=>'12']);
 
 ?>
 
