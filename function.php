@@ -240,6 +240,26 @@ return $pdo->exec($sql);
 }
 
 /**
+ * 新增資料
+ * @param string $table 資料表名稱
+ * @param string $cols 新增的欄位字串
+ * @param string $values 新增的值字串
+ * @param boolean
+ */
+
+ function insert($table,$array){
+    $pdo=pdo('crud');
+    $sql="insert into $table ";
+    $keys=array_keys($array);
+    
+    $sql=$sql . "(`".join("`,`",$keys)."`) values ('".join("','",$array)."')";
+    return $pdo->exec($sql);
+
+ }
+
+
+
+/**
 * 列出陣列內容
 */
 function dd($array){
@@ -248,8 +268,17 @@ print_r($array);
 echo "</pre>";
 }
 
+// 更新 帳號編號12的信箱
+// function頁面不會回傳任何值=>表示成功
 
-update('member',['email'=>'12@gmail.com'],['acc'=>'12','pw'=>'12']);
+// update('member',['email'=>'12@gmail.com'],['acc'=>'12','pw'=>'12']);
+
+// 新增
+
+// insert("member",["acc"=>21,
+//                 "pw"=>21,
+//                 "email"=>"21@gmail.com",
+//                 "tel"=>"0933254879"]);
 
 ?>
 
