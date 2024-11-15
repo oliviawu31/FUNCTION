@@ -103,6 +103,11 @@
             <input type="reset" value="重置">
         </div>
     </form>
+
+    <?php
+        include "../function_02.php";
+        starts('菱形',18);
+    ?>
 </body>
 
 </html>
