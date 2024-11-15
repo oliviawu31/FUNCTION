@@ -5,14 +5,20 @@ if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
     exit();
 }
 
-$dsn="mysql:host=localhost;charset=utf8;dbname=crud";
-$pdo=new PDO($dsn,'root','');
+// $dsn="mysql:host=localhost;charset=utf8;dbname=crud";
+// $pdo=new PDO($dsn,'root','');
+
+// $id=$_GET['id'];
+// $sql="delete from member where id='$id'";
+
+// // echo $sql;
+// $pdo->exec($sql);
+
+include "../function.php";
 
 $id=$_GET['id'];
-$sql="delete from member where id='$id'";
+del('member',$id);
 
-// echo $sql;
-$pdo->exec($sql);
 
 header("location:success.php");
 ?>
